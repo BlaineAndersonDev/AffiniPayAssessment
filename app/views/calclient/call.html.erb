@@ -1,2 +1,6 @@
-<h2 class="header"><%= @information[:message] %></h2>
-<p><%= @information[:value] %></p>
+<% if @information %>
+  <h2 class="header"><%= @information[:message] %></h2>
+  <p><%= @information[:value] %></p>
+<% end %>
+
+<%= render 'form' %>
