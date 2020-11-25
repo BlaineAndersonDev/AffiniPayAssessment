@@ -9,6 +9,7 @@ class CalclientController < ApplicationController
   def call
     valid_servers = ["sum", "subtract"]
     valid_numbers = /\A[-+]?[0-9]*\.?[0-9]+\Z/
+
     # Check that params are what we want (Valid server name & two valid numbers).
     return @information = { message: "Invalid server name." } if !valid_servers.include?(params['server'])
     return @information = { message: "Num1 must be an integer." } if !valid_numbers.match(params['num1'])
