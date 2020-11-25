@@ -1,6 +1,5 @@
 class CalclientController < ApplicationController
-
-      # render :status => 500
+  # Developer note: To extect functionality to another "server", add the server name to the `valid_servers` array, and include the required server + parameters in the `if..then` statement at the bottom of the `call` action. Don't forget to update tests!
 
   def index
     return "Hello World"
