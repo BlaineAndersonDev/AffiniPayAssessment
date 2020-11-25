@@ -11,12 +11,16 @@ class CalclientControllerTest < ActionDispatch::IntegrationTest
 
   test "should succeed with vaild sum call" do
     post call_path, params: { server: "sum", num1: 6, num2: 4 }
+    post call_path, params: { server: "SUM", num1: 6, num2: 4 }
+    post call_path, params: { server: "SuM", num1: 6, num2: 4 }
     assert_response :success
     assert_select "h2.header", "Server name: 'sum'."
   end
 
   test "should succeed with vaild subtract call" do
     post call_path, params: { server: "subtract", num1: 6, num2: 4 }
+    post call_path, params: { server: "SUBTRACT", num1: 6, num2: 4 }
+    post call_path, params: { server: "SuBtRaCt", num1: 6, num2: 4 }
     assert_response :success
     assert_select "h2.header", "Server name: 'subtract'."
   end
