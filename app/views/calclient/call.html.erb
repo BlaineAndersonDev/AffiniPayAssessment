@@ -1,6 +1,3 @@
-<% if @information %>
-  <h2 class="header"><%= @information[:message] %></h2>
-  <p><%= @information[:value] %></p>
-<% end %>
-
+<%= render 'display' %>
+<%= render 'buttons' %>
 <%= render 'form' %>

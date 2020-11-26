@@ -1,0 +1,9 @@
+<% if @information %>
+  <h1 class="header">AffiniPay CalClient API</h1>
+  <div class="info_container">
+    <h3 class="message"><%= @information[:message] %></h3>
+    <% if @information %>
+      <p class="value"><%= @information[:value] %></p>
+    <% end %>
+  </div>
+<% end %>
