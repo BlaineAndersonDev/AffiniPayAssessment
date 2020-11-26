@@ -10,48 +10,79 @@ class CalclientControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should succeed with vaild sum call" do
-    post call_path, params: { server: "sum", num1: 6, num2: 4 }
-    post call_path, params: { server: "SUM", num1: 6, num2: 4 }
-    post call_path, params: { server: "SuM", num1: 6, num2: 4 }
+    post call_path, params: { server: "sum", value1: 6, value2: 4 }
+    post call_path, params: { server: "SUM", value1: 6, value2: 4 }
+    post call_path, params: { server: "SuM", value1: 6, value2: 4 }
     assert_response :success
     assert_select "h2.header", "Server name: 'sum'."
   end
 
   test "should succeed with vaild subtract call" do
-    post call_path, params: { server: "subtract", num1: 6, num2: 4 }
-    post call_path, params: { server: "SUBTRACT", num1: 6, num2: 4 }
-    post call_path, params: { server: "SuBtRaCt", num1: 6, num2: 4 }
+    post call_path, params: { server: "subtract", value1: 6, value2: 4 }
+    post call_path, params: { server: "SUBTRACT", value1: 6, value2: 4 }
+    post call_path, params: { server: "SuBtRaCt", value1: 6, value2: 4 }
     assert_response :success
     assert_select "h2.header", "Server name: 'subtract'."
   end
 
+  test "should succeed with vaild concanate_upcase call" do
+    post call_path, params: { server: "concanate_upcase", value1: "Example", value2: "Text" }
+    post call_path, params: { server: "CoNcAnAtE_UpCaSe", value1: "Example", value2: "Text" }
+    post call_path, params: { server: "CONCANATE_UPCASE", value1: "Example", value2: "Text" }
+    post call_path, params: { server: "CONCANATE_UPCASE", value1: "Example", value2: "Text" }
+    assert_response :success
+    assert_select "h2.header", "Server name: 'concanate_upcase'."
+  end
+
   test "should fail gracefully with invaild server name" do
-    post call_path, params: { server: "bad_server_name", num1: 6, num2: 4 }
-    post call_path, params: { server: nil, num1: 6, num2: 4 }
-    post call_path, params: { server: "", num1: 6, num2: 4 }
-    post call_path, params: { server: "   ", num1: 6, num2: 4 }
+    post call_path, params: { server: "bad_server_name", value1: 6, value2: 4 }
+    post call_path, params: { server: nil, value1: 6, value2: 4 }
+    post call_path, params: { server: "", value1: 6, value2: 4 }
+    post call_path, params: { server: "   ", value1: 6, value2: 4 }
+    post call_path, params: { server: "This could be any name", value1: 6, value2: 4 }
+    post call_path, params: { server: "@#!$%!@#$GTWIVBWEFRV~#$@#!~$~!@$R", value1: 6, value2: 4 }
     assert_response :success
     assert_select "h2.header", "Invalid server name."
   end
 
-  test "should fail gracefully with invaild num1" do
-    post call_path, params: { server: "sum", num1: "a", num2: 4 }
-    post call_path, params: { server: "sum", num1: "1", num2: 4 }
-    post call_path, params: { server: "sum", num1: nil, num2: 4 }
-    post call_path, params: { server: "sum", num1: "", num2: 4 }
-    post call_path, params: { server: "sum", num1: "    ", num2: 4 }
+  test "should fail gracefully with invaild value1 for integer servers" do
+    post call_path, params: { server: "sum", value1: "a", value2: 4 }
+    post call_path, params: { server: "sum", value1: "1", value2: 4 }
+    post call_path, params: { server: "sum", value1: nil, value2: 4 }
+    post call_path, params: { server: "sum", value1: "", value2: 4 }
+    post call_path, params: { server: "sum", value1: "    ", value2: 4 }
     assert_response :success
-    assert_select "h2.header", "Num1 must be an integer."
+    assert_select "h2.header", "Value1 must be an integer."
   end
 
-  test "should fail gracefully with invaild num2" do
-    post call_path, params: { server: "sum", num1: 5, num2: "b" }
-    post call_path, params: { server: "sum", num1: 5, num2: "10" }
-    post call_path, params: { server: "sum", num1: 5, num2: nil }
-    post call_path, params: { server: "sum", num1: 5, num2: "" }
-    post call_path, params: { server: "sum", num1: 5, num2: "   " }
+  test "should fail gracefully with invaild value2 for integer servers" do
+    post call_path, params: { server: "sum", value1: 5, value2: "b" }
+    post call_path, params: { server: "sum", value1: 5, value2: "10" }
+    post call_path, params: { server: "sum", value1: 5, value2: nil }
+    post call_path, params: { server: "sum", value1: 5, value2: "" }
+    post call_path, params: { server: "sum", value1: 5, value2: "   " }
     assert_response :success
-    assert_select "h2.header", "Num2 must be an integer."
+    assert_select "h2.header", "Value2 must be an integer."
+  end
+
+  test "should fail gracefully with invaild value1 for string servers" do
+    post call_path, params: { server: "concanate_upcase", value1: 1, value2: "test" }
+    post call_path, params: { server: "concanate_upcase", value1: 0, value2: "test" }
+    post call_path, params: { server: "concanate_upcase", value1: nil, value2: "test" }
+    post call_path, params: { server: "concanate_upcase", value1: "", value2: "test" }
+    post call_path, params: { server: "concanate_upcase", value1: "    ", value2: "test" }
+    assert_response :success
+    assert_select "h2.header", "Value1 must be a string."
+  end
+
+  test "should fail gracefully with invaild value2 for string servers" do
+    post call_path, params: { server: "concanate_upcase", value1: "example", value2: 1 }
+    post call_path, params: { server: "concanate_upcase", value1: "example", value2: 0 }
+    post call_path, params: { server: "concanate_upcase", value1: "example", value2: nil }
+    post call_path, params: { server: "concanate_upcase", value1: "example", value2: "" }
+    post call_path, params: { server: "concanate_upcase", value1: "example", value2: "   " }
+    assert_response :success
+    assert_select "h2.header", "Value2 must be a string."
   end
 
 end

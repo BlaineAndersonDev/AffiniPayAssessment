@@ -1,6 +1,7 @@
-<%= button_to "Sum", call_path, params: { server: "sum", num1: 2, num2: 8 } %>
-<%= button_to "Subtract", call_path, params: { server: "subtract", num1: 5, num2: 4 } %>
-<%= button_to "Invalid", call_path, params: { server: "   ", num1: '1', num2: 8 } %>
+<%= button_to "Sum", call_path, params: { server: "sum", value1: 2, value2: 8 } %>
+<%= button_to "Subtract", call_path, params: { server: "subtract", value1: 5, value2: 4 } %>
+<%= button_to "Concanate", call_path, params: { server: "concanate_upcase", value1: "example", value2: "text" } %>
+<%= button_to "Invalid", call_path, params: { server: "   ", value1: '1', value2: 8 } %>
 
 <h1>Custom Parameters</h1>
 <div>
@@ -9,11 +10,11 @@
   <%= f.label :server %>
   <%= f.text_field :server %>
 
-  <%= f.label :num1 %>
-  <%= f.text_field :num1 %>
+  <%= f.label :value1 %>
+  <%= f.text_field :value1 %>
 
-  <%= f.label :num2 %>
-  <%= f.text_field :num2 %>
+  <%= f.label :value2 %>
+  <%= f.text_field :value2 %>
 
   <%= f.submit "Submit" %>
   <% end %>
