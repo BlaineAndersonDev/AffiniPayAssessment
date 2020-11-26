@@ -14,7 +14,7 @@ class CalclientControllerTest < ActionDispatch::IntegrationTest
     post call_path, params: { server: "SUM", value1: 6, value2: 4 }
     post call_path, params: { server: "SuM", value1: 6, value2: 4 }
     assert_response :success
-    assert_select "h2.header", "Server name: 'sum'."
+    assert_select "h3.message", "Server name: 'sum'."
   end
 
   test "should succeed with vaild subtract call" do
@@ -22,7 +22,7 @@ class CalclientControllerTest < ActionDispatch::IntegrationTest
     post call_path, params: { server: "SUBTRACT", value1: 6, value2: 4 }
     post call_path, params: { server: "SuBtRaCt", value1: 6, value2: 4 }
     assert_response :success
-    assert_select "h2.header", "Server name: 'subtract'."
+    assert_select "h3.message", "Server name: 'subtract'."
   end
 
   test "should succeed with vaild concanate_upcase call" do
@@ -31,7 +31,7 @@ class CalclientControllerTest < ActionDispatch::IntegrationTest
     post call_path, params: { server: "CONCANATE_UPCASE", value1: "Example", value2: "Text" }
     post call_path, params: { server: "CONCANATE_UPCASE", value1: "Example", value2: "Text" }
     assert_response :success
-    assert_select "h2.header", "Server name: 'concanate_upcase'."
+    assert_select "h3.message", "Server name: 'concanate_upcase'."
   end
 
   test "should fail gracefully with invaild server name" do
@@ -42,7 +42,7 @@ class CalclientControllerTest < ActionDispatch::IntegrationTest
     post call_path, params: { server: "This could be any name", value1: 6, value2: 4 }
     post call_path, params: { server: "@#!$%!@#$GTWIVBWEFRV~#$@#!~$~!@$R", value1: 6, value2: 4 }
     assert_response :success
-    assert_select "h2.header", "Invalid server name."
+    assert_select "h3.message", "Invalid server name."
   end
 
   test "should fail gracefully with invaild value1 for integer servers" do
@@ -52,7 +52,7 @@ class CalclientControllerTest < ActionDispatch::IntegrationTest
     post call_path, params: { server: "sum", value1: "", value2: 4 }
     post call_path, params: { server: "sum", value1: "    ", value2: 4 }
     assert_response :success
-    assert_select "h2.header", "Value1 must be an integer."
+    assert_select "h3.message", "Value1 must be an integer."
   end
 
   test "should fail gracefully with invaild value2 for integer servers" do
@@ -62,7 +62,7 @@ class CalclientControllerTest < ActionDispatch::IntegrationTest
     post call_path, params: { server: "sum", value1: 5, value2: "" }
     post call_path, params: { server: "sum", value1: 5, value2: "   " }
     assert_response :success
-    assert_select "h2.header", "Value2 must be an integer."
+    assert_select "h3.message", "Value2 must be an integer."
   end
 
   test "should fail gracefully with invaild value1 for string servers" do
@@ -72,7 +72,7 @@ class CalclientControllerTest < ActionDispatch::IntegrationTest
     post call_path, params: { server: "concanate_upcase", value1: "", value2: "test" }
     post call_path, params: { server: "concanate_upcase", value1: "    ", value2: "test" }
     assert_response :success
-    assert_select "h2.header", "Value1 must be a string."
+    assert_select "h3.message", "Value1 must be a string."
   end
 
   test "should fail gracefully with invaild value2 for string servers" do
@@ -82,7 +82,7 @@ class CalclientControllerTest < ActionDispatch::IntegrationTest
     post call_path, params: { server: "concanate_upcase", value1: "example", value2: "" }
     post call_path, params: { server: "concanate_upcase", value1: "example", value2: "   " }
     assert_response :success
-    assert_select "h2.header", "Value2 must be a string."
+    assert_select "h3.message", "Value2 must be a string."
   end
 
 end
